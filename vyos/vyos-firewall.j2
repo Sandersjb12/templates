@@ -1,14 +1,10 @@
 set firewall global-options source-validation 'disable'
 set firewall group ipv6-network-group Allowed-Transit-v6 network 'fd00::/8'
-{#
 set firewall group ipv6-network-group My-Assigned-Space-v6 network 'fd00:1444:1821::/48'
-#}
 set firewall group network-group Allowed-Transit-v4 network '10.0.0.0/8'
 set firewall group network-group Allowed-Transit-v4 network '172.20.0.0/14'
 set firewall group network-group Allowed-Transit-v4 network '172.31.0.0/16'
-{#
 set firewall group network-group My-Assigned-Space-v4 network '172.20.53.64/27'
-#}
 set firewall ipv4 name DN42EXT-DN42INT default-action 'drop'
 set firewall ipv4 name DN42EXT-DN42INT default-log
 set firewall ipv4 name DN42EXT-DN42INT rule 70 action 'accept'
@@ -57,11 +53,7 @@ set firewall ipv4 name WAN-LOCAL rule 25 action 'accept'
 set firewall ipv4 name WAN-LOCAL rule 25 description 'BB_VPN_IN'
 set firewall ipv4 name WAN-LOCAL rule 25 destination port '51820-51825'
 set firewall ipv4 name WAN-LOCAL rule 25 protocol 'udp'
-set firewall ipv4 name WAN-LOCAL rule 30 action 'accept'
-{#
-set firewall ipv4 name WAN-LOCAL rule 30 description 'wireguard BP: KSKB AS4242421817'
-set firewall ipv4 name WAN-LOCAL rule 30 destination port '21817'
-set firewall ipv4 name WAN-LOCAL rule 30 protocol 'udp'
+{# peer
 set firewall ipv4 name WAN-LOCAL rule 31 action 'accept'
 set firewall ipv4 name WAN-LOCAL rule 31 description 'wireguard BP: SUNNET AS4242423088'
 set firewall ipv4 name WAN-LOCAL rule 31 destination port '23088'
@@ -113,13 +105,13 @@ set firewall ipv6 name WAN-LOCAL rule 22 action 'accept'
 set firewall ipv6 name WAN-LOCAL rule 22 destination port '22'
 set firewall ipv6 name WAN-LOCAL rule 22 protocol 'tcp'
 set firewall ipv6 name WAN-OTHER default-action 'drop'
-{#
 set firewall zone DN42EXT from DN42INT firewall ipv6-name 'DN42INT-DN42EXT'
 set firewall zone DN42EXT from DN42INT firewall name 'DN42INT-DN42EXT'
 set firewall zone DN42EXT from LOCAL firewall ipv6-name 'LOCAL-DN42EXT'
 set firewall zone DN42EXT from LOCAL firewall name 'LOCAL-DN42EXT'
 set firewall zone DN42EXT from WAN firewall ipv6-name 'WAN-OTHER'
 set firewall zone DN42EXT from WAN firewall name 'WAN-OTHER'
+{# peer
 set firewall zone DN42EXT interface 'wg10'
 set firewall zone DN42EXT interface 'wg11'
 #}
@@ -129,7 +121,7 @@ set firewall zone DN42INT from LOCAL firewall ipv6-name 'LOCAL-DN42INT'
 set firewall zone DN42INT from LOCAL firewall name 'LOCAL-DN42INT'
 set firewall zone DN42INT from WAN firewall ipv6-name 'WAN-OTHER'
 set firewall zone DN42INT from WAN firewall name 'WAN-OTHER'
-{#
+{# bb
 set firewall zone DN42INT interface 'vtun3'
 set firewall zone DN42INT interface 'vtun4'
 #}
@@ -147,4 +139,6 @@ set firewall zone WAN from DN42INT firewall ipv6-name 'OTHER-WAN'
 set firewall zone WAN from DN42INT firewall name 'OTHER-WAN'
 set firewall zone WAN from LOCAL firewall ipv6-name 'LOCAL-WAN'
 set firewall zone WAN from LOCAL firewall name 'LOCAL-WAN'
+{# interfaces
 set firewall zone WAN interface 'eth0'
+#}
