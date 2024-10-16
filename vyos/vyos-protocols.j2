@@ -1,0 +1,66 @@
+set protocols bgp address-family ipv4-unicast network 172.20.53.64/27
+set protocols bgp address-family ipv6-unicast network fd00:1444:1821::/48
+set protocols bgp bmp target openbmp address '192.168.1.12'
+set protocols bgp bmp target openbmp monitor ipv4-unicast pre-policy
+set protocols bgp bmp target openbmp monitor ipv6-unicast pre-policy
+set protocols bgp neighbor 172.20.53.90 address-family ipv4-unicast
+set protocols bgp neighbor 172.20.53.90 description 'BB: dal01'
+set protocols bgp neighbor 172.20.53.90 peer-group 'internal'
+set protocols bgp neighbor 172.20.53.91 address-family ipv4-unicast
+set protocols bgp neighbor 172.20.53.91 description 'BB: sea01'
+set protocols bgp neighbor 172.20.53.91 peer-group 'internal'
+set protocols bgp neighbor 172.20.53.93 address-family ipv4-unicast
+set protocols bgp neighbor 172.20.53.93 description 'BB: fra01'
+set protocols bgp neighbor 172.20.53.93 peer-group 'internal'
+set protocols bgp neighbor fd28:cb8f:4c92:7777::7 description 'BP: KSKB AS4242421817'
+set protocols bgp neighbor fd28:cb8f:4c92:7777::7 peer-group 'transit'
+set protocols bgp neighbor fd28:cb8f:4c92:7777::7 remote-as '4242421817'
+set protocols bgp neighbor fe80::3088:190 description 'BP: SUNNET AS4242423088'
+set protocols bgp neighbor fe80::3088:190 peer-group 'transit'
+set protocols bgp neighbor fe80::3088:190 remote-as '4242423088'
+set protocols bgp parameters log-neighbor-changes
+set protocols bgp parameters router-id '172.20.53.94'
+set protocols bgp peer-group internal address-family ipv4-unicast nexthop-self
+set protocols bgp peer-group internal address-family ipv4-unicast route-map export 'internal-out'
+set protocols bgp peer-group internal address-family ipv4-unicast route-map import 'internal-in'
+set protocols bgp peer-group internal address-family ipv4-unicast soft-reconfiguration inbound
+set protocols bgp peer-group internal address-family ipv6-unicast nexthop-self
+set protocols bgp peer-group internal address-family ipv6-unicast route-map export 'internal-out'
+set protocols bgp peer-group internal address-family ipv6-unicast route-map import 'internal-in'
+set protocols bgp peer-group internal address-family ipv6-unicast soft-reconfiguration inbound
+set protocols bgp peer-group internal remote-as 'internal'
+set protocols bgp peer-group internal update-source 'lo'
+set protocols bgp peer-group transit address-family ipv4-unicast nexthop-self
+set protocols bgp peer-group transit address-family ipv4-unicast route-map export 'transit-out'
+set protocols bgp peer-group transit address-family ipv4-unicast route-map import 'transit-in'
+set protocols bgp peer-group transit address-family ipv4-unicast soft-reconfiguration inbound
+set protocols bgp peer-group transit address-family ipv6-unicast nexthop-self
+set protocols bgp peer-group transit address-family ipv6-unicast route-map export 'transit-out'
+set protocols bgp peer-group transit address-family ipv6-unicast route-map import 'transit-in'
+set protocols bgp peer-group transit address-family ipv6-unicast soft-reconfiguration inbound
+set protocols bgp peer-group transit capability dynamic
+set protocols bgp peer-group transit capability extended-nexthop
+set protocols bgp peer-group transit ebgp-multihop '10'
+set protocols bgp peer-group transit update-source 'lo'
+set protocols bgp system-as '4242422914'
+set protocols isis dynamic-hostname
+set protocols isis interface lo passive
+set protocols isis interface vtun3 circuit-type 'level-2-only'
+set protocols isis interface vtun3 metric '95'
+set protocols isis interface vtun3 network point-to-point
+set protocols isis interface vtun4 circuit-type 'level-2-only'
+set protocols isis interface vtun4 metric '255'
+set protocols isis interface vtun4 network point-to-point
+set protocols isis level 'level-2'
+set protocols isis log-adjacency-changes
+set protocols isis lsp-mtu '1417'
+set protocols isis net '49.0001.1720.2005.3094.00'
+set protocols rpki cache 172.20.53.66 port '323'
+set protocols rpki cache 172.20.53.66 preference '1'
+set protocols static route 0.0.0.0/0 interface eth0 distance '254'
+set protocols static route 172.21.100.190/32 interface wg11
+set protocols static route 172.22.77.47/32 interface wg10
+set protocols static route6 ::/0 interface eth0 distance '254'
+set protocols static route6 fd28:cb8f:4c92:7777::7/128 interface wg10
+set protocols static route6 fdc8:dc88:ee11:190::1/128 interface wg11
+set protocols static route6 fe80::3088:190/128 interface wg11

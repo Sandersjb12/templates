@@ -1,0 +1,26 @@
+set service dns forwarding allow-from '172.20.53.64/27'
+set service dns forwarding dnssec 'process'
+set service dns forwarding listen-address '172.20.53.94'
+set service dns forwarding system
+set service ids
+set service lldp management-address '172.20.53.94'
+set service lldp snmp
+set service ntp allow-client address '0.0.0.0/0'
+set service ntp allow-client address '::/0'
+set service ntp allow-client address '172.20.53.64/27'
+set service ntp allow-client address 'fd00:1444:1821::/64'
+set service ntp server time1.vyos.net
+set service ntp server time2.vyos.net
+set service ntp server time3.vyos.net
+set service snmp listen-address 172.20.53.94
+set service snmp location 'Vultr Tokyo'
+set service snmp v3 engineid '000000000000000000000005'
+set service snmp v3 group default mode 'ro'
+set service snmp v3 group default view 'default'
+{#password#}
+set service snmp v3 user nms auth type 'sha'
+set service snmp v3 user nms group 'default'
+{#password#}
+set service snmp v3 user nms privacy type 'aes'
+set service snmp v3 view default oid 1
+set service ssh port '22'

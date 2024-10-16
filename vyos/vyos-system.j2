@@ -1,0 +1,50 @@
+set service dns forwarding allow-from '172.20.53.64/27'
+set service dns forwarding dnssec 'process'
+set service dns forwarding listen-address '172.20.53.94'
+set service dns forwarding system
+set service ids
+set service lldp management-address '172.20.53.94'
+set service lldp snmp
+set service ntp allow-client address '0.0.0.0/0'
+set service ntp allow-client address '::/0'
+set service ntp allow-client address '172.20.53.64/27'
+set service ntp allow-client address 'fd00:1444:1821::/64'
+set service ntp server time1.vyos.net
+set service ntp server time2.vyos.net
+set service ntp server time3.vyos.net
+set service snmp listen-address 172.20.53.94
+set service snmp location 'Vultr Tokyo'
+set service snmp v3 engineid '000000000000000000000005'
+set service snmp v3 group default mode 'ro'
+set service snmp v3 group default view 'default'
+set service snmp v3 user nms auth encrypted-password '9a80cfdebfd5a01542ff71228a0e8a4cb1fac562'
+set service snmp v3 user nms auth type 'sha'
+set service snmp v3 user nms group 'default'
+set service snmp v3 user nms privacy encrypted-password '9a80cfdebfd5a01542ff71228a0e8a4cb1fac562'
+set service snmp v3 user nms privacy type 'aes'
+set service snmp v3 view default oid 1
+set service ssh port '22'
+set system config-management commit-revisions '100'
+set system conntrack modules ftp
+set system conntrack modules h323
+set system conntrack modules nfs
+set system conntrack modules pptp
+set system conntrack modules sip
+set system conntrack modules sqlnet
+set system conntrack modules tftp
+set system console device ttyS0 speed '115200'
+set system domain-name 'jennsanders.net'
+set system domain-search 'dn42.jennsanders.net'
+set system domain-search 'dn42'
+set system frr bmp
+set system frr snmp bgpd
+set system frr snmp isisd
+set system frr snmp ldpd
+set system host-name 'tky01.dn42'
+{#user keys#}
+set system name-server '192.168.1.10'
+set system option performance 'latency'
+set system syslog global facility all level 'info'
+set system syslog global facility local7 level 'debug'
+set system syslog host nms.home.jennsanders.net facility local7 level 'err'
+set system syslog host nms.home.jennsanders.net protocol 'udp'
