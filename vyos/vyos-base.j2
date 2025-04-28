@@ -1,0 +1,3 @@
+    {% for interface in device.interfaces.all() %}
+        {% include 'vyos-interfaces.j2' %}
+    {% endfor %}
