@@ -1,14 +1,14 @@
-set firewall zone DN42INT interface '{{ name }}'
-set interfaces openvpn {{ name }} description '{{ description }}'
+set firewall zone DN42INT interface '{{ interface.name }}'
+set interfaces openvpn {{ name }} description '{{ interface.description }}'
 set interfaces openvpn {{ name }} device-type 'tap'
 set interfaces openvpn {{ name }} encryption cipher 'aes128'
-set interfaces openvpn {{ name }} local-address {{ ip_addresses.address|replace("/31", "") }} subnet-mask '255.255.255.254'
-set interfaces openvpn {{ name }} local-port '5182{{ name|replace("vtun","") }}'
+set interfaces openvpn {{ name }} local-address {{ interface.ip_addresses.get()|replace("/31", "") }} subnet-mask '255.255.255.254'
+set interfaces openvpn {{ name }} local-port '5182{{ interface.name|replace("vtun","") }}'
 set interfaces openvpn {{ name }} mode 'site-to-site'
 set interfaces openvpn {{ name }} persistent-tunnel
 set interfaces openvpn {{ name }} protocol 'udp'
-set interfaces openvpn {{ name }} remote-address '{{ ip_addresses.custom_fields.VPN_Zside_IP.address|replace("/31", "") }}'
-set interfaces openvpn {{ name }} remote-port '5182{{ name|replace("vtun","") }}'
+set interfaces openvpn {{ name }} remote-address '{{ interface.cf["VPN_Zside"].ip_addresses.get().address|replace("/31", "") }}'
+set interfaces openvpn {{ name }} remote-port '5182{{ interface.name|replace("vtun","") }}'
 set interfaces openvpn {{ name }} tls certificate 'openvpn-{{ device.name|replace(".jsanders.dn42", "") }}'
-set interfaces openvpn {{ name }} tls peer-fingerprint '{{ custom_fields.openvpn_peer_fingerprint }}'
-set interfaces openvpn {{ name }} tls role {{ custom_fields.openvpn_tls_role }}
+set interfaces openvpn {{ name }} tls peer-fingerprint '{{ interface.cf.openvpn_peer_fingerprint }}'
+set interfaces openvpn {{ name }} tls role {{ interface.cf.openvpn_tls_role }}
