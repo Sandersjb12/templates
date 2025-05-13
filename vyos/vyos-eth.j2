@@ -1,0 +1,11 @@
+{%- if "WAN" in interface.description -%}
+set firewall zone WAN interface '{{ interface.name }}'
+set interfaces ethernet {{ interface.name }} address 'dhcp'
+set interfaces ethernet {{ interface.name }} address 'dhcpv6'
+set interfaces ethernet {{ interface.name }} description '{{ interface.description }}'
+{%- else -%}
+set firewall zone DN42INT interface '{{ interface.name }}'
+set interfaces ethernet {{ interface.name }} address '{{ interface.ip_addresses.get() }}'
+set interfaces ethernet {{ interface.name }} description '{{ interface.description }}'
+set interfaces ethernet {{ interface.name }} mtu '{{ interface.mtu }}'
+{%- endif -%}

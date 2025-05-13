@@ -1,7 +1,9 @@
-{% for interface in device.interfaces.all() %}
-    {% if "vtun" in interface.name %}
+{%- for interface in device.interfaces.all() -%}
+    {%- if "vtun" in interface.name -%}
         {% include 'vyos-bb.j2' %}
-    {% elif "lo" in interface.name %}
+    {%- elif "lo" in interface.name -%}
         {% include 'vyos-loopback.j2' %}
+    {%- elif "eth" in interface.name -%}
+        {% include 'vyos-eth.j2' %}
     {% endif %}
 {% endfor %}
