@@ -7,8 +7,8 @@ set interfaces openvpn {{ name }} local-port '5182{{ interface.name|replace("vtu
 set interfaces openvpn {{ name }} mode 'site-to-site'
 set interfaces openvpn {{ name }} persistent-tunnel
 set interfaces openvpn {{ name }} protocol 'udp'
-set interfaces openvpn {{ name }} remote-address '{{ interface.cf["VPN_Zside"].ip_addresses.get().address|replace("/31", "") }}'
+set interfaces openvpn {{ name }} remote-address '{{ interface.custom_field_data.['VPN_Zside'].ip_addresses.get().address|replace("/31", "") }}'
 set interfaces openvpn {{ name }} remote-port '5182{{ interface.name|replace("vtun","") }}'
 set interfaces openvpn {{ name }} tls certificate 'openvpn-{{ device.name|replace(".jsanders.dn42", "") }}'
-set interfaces openvpn {{ name }} tls peer-fingerprint '{{ interface.cf.openvpn_peer_fingerprint }}'
-set interfaces openvpn {{ name }} tls role {{ interface.cf.openvpn_tls_role }}
+set interfaces openvpn {{ name }} tls peer-fingerprint '{{ interface.custom_field_data.openvpn_peer_fingerprint }}'
+set interfaces openvpn {{ name }} tls role {{ interface.custom_field_data.openvpn_tls_role }}

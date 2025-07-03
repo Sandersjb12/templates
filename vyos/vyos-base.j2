@@ -5,5 +5,9 @@
         {% include 'vyos-loopback.j2' %}
     {%- elif "eth" in interface.name -%}
         {% include 'vyos-eth.j2' %}
+    {%- elif "wg" in interface.name -%}
+        {%- if interface.cf.BGP_PeerGroup.name == 'DN42 Peer' -%}
+            {% include 'vyos-peer.j2' %}
+        {% endif %}
     {% endif %}
 {% endfor %}
