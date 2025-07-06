@@ -1,4 +1,4 @@
-{%- for interface in device.interfaces.all() -%}
+{%- for interface in interfaces -%}
     {%- if "vtun" in interface.name -%}
         {% include 'vyos-bb.j2' %}
     {%- elif "lo" in interface.name -%}
@@ -6,8 +6,10 @@
     {%- elif "eth" in interface.name -%}
         {% include 'vyos-eth.j2' %}
     {%- elif "wg" in interface.name -%}
-        {%- if interface.cf.BGP_PeerGroup.name == 'DN42 Peer' -%}
+        {%- if interface.custom_fields.BGP_PeerGroup.name == 'DN42 Peer' -%}
             {% include 'vyos-peer.j2' %}
-        {% endif %}
+        {%- else -%}
+            {% include 'vyos-wireguard.j2' %}
+        {%- endif %}
     {% endif %}
 {% endfor %}
