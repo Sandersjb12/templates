@@ -1,4 +1,4 @@
-set firewall zone DN42INT interface '{{ interface.name }}'
+set firewall zone {{ interface.custom_fields.Firewall_Zone }} interface '{{ interface.name }}'
 set interfaces openvpn {{ interface.name }} description '{{ interface.description }}'
 set interfaces openvpn {{ interface.name }} device-type 'tap'
 set interfaces openvpn {{ interface.name }} encryption cipher 'aes128'

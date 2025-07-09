@@ -1,3 +1,4 @@
+{% include 'vyos-firewall.j2' %}
 {%- for interface in interfaces -%}
     {%- if "vtun" in interface.name -%}
         {% include 'vyos-bb.j2' %}
@@ -6,10 +7,7 @@
     {%- elif "eth" in interface.name -%}
         {% include 'vyos-eth.j2' %}
     {%- elif "wg" in interface.name -%}
-        {%- if interface.custom_fields.BGP_PeerGroup.name == 'DN42 Peer' -%}
-            {% include 'vyos-peer.j2' %}
-        {%- else -%}
-            {% include 'vyos-wireguard.j2' %}
-        {%- endif %}
+        {% include 'vyos-wireguard.j2' %}
     {% endif %}
 {% endfor %}
+{% include 'vyos-nat.j2' %}
