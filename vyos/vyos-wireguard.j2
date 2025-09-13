@@ -1,3 +1,5 @@
+{% set ip_versions = [4,6] %}
+
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} action 'accept'
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} description 'wireguard {{ interface.description }}'
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} destination port '{{ interface.custom_fields.Wireguard_PeerPort }}'
@@ -26,7 +28,6 @@ set interfaces wireguard {{ interface.name }} private-key '{{ interface.custom_f
 set firewall group network-group home network '192.168.0.0/16'
 set firewall group network-group home network '172.20.53.64/29'
 
-{% set ip_versions = [4,6] %}
 {% for ipv in ip_versions %}
 set firewall ipv{{ ipv }} name DN42-HOME default-action 'drop'
 set firewall ipv{{ ipv }} name DN42-HOME rule 5 action 'accept'
