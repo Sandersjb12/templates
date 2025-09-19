@@ -1,9 +1,31 @@
 {% set ip_versions = [4,6] %}
 
+{% if interface.custom_fields.Firewall_Zone == 'DN42EXT' %}
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} action 'accept'
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} description 'wireguard {{ interface.description }}'
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} destination port '{{ interface.custom_fields.Wireguard_PeerPort }}'
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} protocol 'udp'
+
+{% if interface.custom_fields.Wireguard_PeerClearnetIP %}
+set interfaces wireguard {{ interface.name }} peer {{ interface.name }} address '{{ interface.custom_fields.Wireguard_PeerClearnetIP|replace("/32", "")|replace("/128", "") }}'
+{% endif %}
+
+{% if interface.custom_fields.Wireguard_PeerPort %}
+set interfaces wireguard {{ interface.name }} peer {{ interface.name }} port '{{ interface.custom_fields.Wireguard_PeerPort }}'
+{% endif %}
+
+set interfaces wireguard {{ interface.name }} port '{{ interface.custom_fields.Wireguard_LocalPort }}'
+
+{% endif %}
+
+{% if interface.custom_fields.Firewall_Zone == 'DN42INT' %}
+
+set interfaces wireguard {{ interface.name }} peer {{ interface.name }} address '{{ interface.ip_addresses[0].custom_fields.VPN_Zside_IP.address|replace("/31", "")|replace("/64", "") }}'
+set interfaces wireguard {{ interface.name }} peer {{ interface.name }} port '5182{{ interface.name|replace("wg","") }}'
+set interfaces wireguard {{ interface.name }} port '5182{{ interface.name|replace("wg","") }}'
+
+{% endif %}
+
 set firewall zone {{ interface.custom_fields.Firewall_Zone }} interface '{{ interface.name }}'
 {% for address in interface.ip_addresses -%}
 set interfaces wireguard {{ interface.name }} address '{{ address['address'] }}'
@@ -14,14 +36,10 @@ set interfaces wireguard {{ interface.name }} peer {{ interface.name }} address 
 {% endif %}
 set interfaces wireguard {{ interface.name }} peer {{ interface.name }} allowed-ips '0.0.0.0/0'
 set interfaces wireguard {{ interface.name }} peer {{ interface.name }} allowed-ips '::/0'
-{% if interface.custom_fields.Wireguard_PeerPort %}
-set interfaces wireguard {{ interface.name }} peer {{ interface.name }} port '{{ interface.custom_fields.Wireguard_PeerPort }}'
-{% endif %}
 {% if interface.custom_fields.Wireguard_PresharedKey -%}
 set interfaces wireguard {{ interface.name }} peer {{ interface.name }} preshared-key '{{ interface.custom_fields.Wireguard_PresharedKey }}'
 {%- endif %}
 set interfaces wireguard {{ interface.name }} peer {{ interface.name }} public-key '{{ interface.custom_fields.Wireguard_PeerPubkey }}'
-set interfaces wireguard {{ interface.name }} port '{{ interface.custom_fields.Wireguard_LocalPort }}'
 set interfaces wireguard {{ interface.name }} private-key '{{ interface.custom_fields.Wireguard_Privkey }}'
 
 {% if interface.custom_fields.Firewall_Zone == 'HOME' %}

@@ -1,8 +1,8 @@
 {% include 'vyos-firewall.j2' %}
 {%- for interface in interfaces -%}
-    {%- if "vtun" in interface.name -%}
-        {% include 'vyos-bb.j2' %}
-    {%- elif "lo" in interface.name -%}
+    {#{%- if "vtun" in interface.name -%}
+        {% include 'vyos-bb.j2' %}#}
+    {%- if "lo" in interface.name -%}
         {% include 'vyos-loopback.j2' %}
     {%- elif "eth" in interface.name -%}
         {% include 'vyos-eth.j2' %}
