@@ -16,10 +16,14 @@ set protocols bgp neighbor {{ config_context[0][host] }} peer-group 'internal'
 set protocols bgp neighbor {{ interface.custom_fields.BGP_PeerIP['address']|replace("/32", "")|replace("/128", "") }} description '{{ interface.custom_fields.BGP_PeerASN['description'] }}'
 set protocols bgp neighbor {{ interface.custom_fields.BGP_PeerIP['address']|replace("/32", "")|replace("/128", "") }} peer-group 'transit'
 set protocols bgp neighbor {{ interface.custom_fields.BGP_PeerIP['address']|replace("/32", "")|replace("/128", "") }} remote-as '{{ interface.custom_fields.BGP_PeerASN['asn'] }}'
+set protocols ospf interface {{ interface.name }} passive
 {% elif interface.custom_fields.BGP_PeerGroup['name'] == "DN42 Internal" %}
-set protocols isis interface {{ interface.name }} circuit-type 'level-2-only'
+{#set protocols isis interface {{ interface.name }} circuit-type 'level-2-only'
 set protocols isis interface {{ interface.name }} metric '{{ interface.custom_fields.latency }}'
-set protocols isis interface {{ interface.name }} network point-to-point
+set protocols isis interface {{ interface.name }} network point-to-point#}
+set protocols ospf interface {{ interface.name }} cost '{{ interface.custom_fields.latency }}'
+set protocols ospfv3 interface {{ interface.name }} cost '{{ interface.custom_fields.latency }}'
+set protocols ospfv3 interface {{ interface.name }} area '0'
 {% endif %}
 {% endfor %}
 
@@ -52,14 +56,20 @@ set protocols bgp peer-group transit update-source 'lo'
 
 set protocols bgp system-as '4242422914'
 
+{#
 set protocols isis dynamic-hostname
 set protocols isis interface lo passive
 set protocols isis level 'level-2'
 set protocols isis log-adjacency-changes
 set protocols isis lsp-mtu '1417'
 set protocols isis net '49.0001.1720.2005.3094.00'
+#}
 
-set protocols ospf 
+set protocols ospf area 0 network '172.20.53.64/27'
+set protocols ospf interface eth0 passive disable
+set protocols ospf interface lo passive
+set protocols ospfv3 interface lo area '0'
+set protocols ospfv3 interface lo passive
 
 set protocols rpki cache 172.20.53.66 port '323'
 set protocols rpki cache 172.20.53.66 preference '1'
