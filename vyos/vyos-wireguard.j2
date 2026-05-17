@@ -6,10 +6,6 @@ set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_Local
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} destination port '{{ interface.custom_fields.Wireguard_PeerPort }}'
 set firewall ipv4 name WAN-LOCAL rule {{ interface.custom_fields.Wireguard_LocalPort }} protocol 'udp'
 
-{% if interface.custom_fields.Wireguard_PeerClearnetIP %}
-set interfaces wireguard {{ interface.name }} peer {{ interface.name }} address '{{ interface.custom_fields.Wireguard_PeerClearnetIP|replace("/32", "")|replace("/128", "") }}'
-{% endif %}
-
 {% if interface.custom_fields.Wireguard_PeerPort %}
 set interfaces wireguard {{ interface.name }} peer {{ interface.name }} port '{{ interface.custom_fields.Wireguard_PeerPort }}'
 {% endif %}
