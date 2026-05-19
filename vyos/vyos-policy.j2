@@ -1,3 +1,4 @@
+{% set ip_versions = [4,6] %}
 {#
 set policy community-list dn42-link rule 10 action 'permit'
 set policy community-list dn42-link rule 10 regex '^64511:([0-9]|1[0-9]|2[0-9]|3[0-9])'
@@ -26,25 +27,49 @@ set policy route-map DN42-ROA rule 30 match rpki 'invalid'
 set policy route-map deny-all rule 1 action 'deny'
 set policy route-map internal-in rule 100 action 'permit'
 set policy route-map internal-out rule 100 action 'permit'
-set policy route-map transit-in rule 100 match ip address prefix-list 'dn42'
-set policy route-map transit-in rule 100 action 'permit'
-set policy route-map transit-in rule 100 call 'DN42-ROA'
-set policy route-map transit-in rule 100 set local-preference '90'
-set policy route-map transit-in rule 200 match ipv6 address prefix-list 'dn42'
-set policy route-map transit-in rule 200 action 'permit'
-set policy route-map transit-in rule 200 call 'DN42-ROA'
-set policy route-map transit-in rule 200 set local-preference '90'
-set policy route-map transit-out rule 200 action 'permit'
-set policy route-map transit-out rule 200 match ip address prefix-list 'dn42-assigned'
+set policy route-map transit-in rule 104 match ip address prefix-list 'dn42'
+set policy route-map transit-in rule 104 action 'permit'
+set policy route-map transit-in rule 104 call 'DN42-ROA'
+set policy route-map transit-in rule 104 set local-preference '90'
+set policy route-map transit-in rule 106 match ipv6 address prefix-list 'dn42'
+set policy route-map transit-in rule 106 action 'permit'
+set policy route-map transit-in rule 106 call 'DN42-ROA'
+set policy route-map transit-in rule 106 set local-preference '90'
+set policy route-map transit-out rule 204 action 'permit'
+set policy route-map transit-out rule 204 match ip address prefix-list 'dn42-assigned'
 set policy route-map transit-out rule 206 action 'permit'
 set policy route-map transit-out rule 206 match ipv6 address prefix-list 'dn42-assigned'
-
-set policy route-map transit-out rule 200 set community add '64511:52'
-set policy route-map transit-out rule 200 set community add '64511:1392'
-set policy route-map transit-out rule 206 set community add '64511:52'
-set policy route-map transit-out rule 206 set community add '64511:1392'
-
-set policy route-map transit-out rule 300 match ip address prefix-list 'dn42'
-set policy route-map transit-out rule 300 action 'permit'
+{% if regions[0] == 'north-america-w' %}
+{% for ipv in ip_versions %}
+set policy route-map transit-out rule 20{{ ipv }} set community add '64511:44'
+{% endfor %}
+{% elif regions[0] == 'north-america-c' %}
+{% for ipv in ip_versions %}
+set policy route-map transit-out rule 20{{ ipv }} set community add '64511:43'
+{% endfor %}
+{% elif regions[0] == 'europe' %}
+{% for ipv in ip_versions %}
+set policy route-map transit-out rule 20{{ ipv }} set community add '64511:41'
+{% endfor %}
+{% elif regions[0] == 'asia-e' %}
+{% for ipv in ip_versions %}
+set policy route-map transit-out rule 20{{ ipv }} set community add '64511:52'
+{% endfor %}
+{% endif %}
+{% if site_groups[0] == 'us' %}
+{% for ipv in ip_versions %}
+set policy route-map transit-out rule 20{{ ipv }} set community add '64511:1840'
+{% endfor %}
+{% elif site_groups[0] == 'de' %}
+{% for ipv in ip_versions %}
+set policy route-map transit-out rule 20{{ ipv }} set community add '64511:1276'
+{% endfor %}
+{% elif site_groups[0] == 'jp' %}
+{% for ipv in ip_versions %}
+set policy route-map transit-out rule 20{{ ipv }} set community add '64511:1392'
+{% endfor %}
+{% endif %}
+set policy route-map transit-out rule 304 match ip address prefix-list 'dn42'
+set policy route-map transit-out rule 304 action 'permit'
 set policy route-map transit-out rule 306 match ipv6 address prefix-list 'dn42'
 set policy route-map transit-out rule 306 action 'permit'

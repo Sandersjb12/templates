@@ -22,7 +22,7 @@ set interfaces wireguard {{ interface.name }} port '5182{{ interface.name|replac
 
 {% endif %}
 
-set firewall zone {{ interface.custom_fields.Firewall_Zone }} interface '{{ interface.name }}'
+set firewall zone {{ interface.custom_fields.Firewall_Zone }} member interface '{{ interface.name }}'
 {% for address in interface.ip_addresses -%}
 set interfaces wireguard {{ interface.name }} address '{{ address['address'] }}'
 {%-  endfor %}

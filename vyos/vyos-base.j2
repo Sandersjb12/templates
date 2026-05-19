@@ -1,14 +1,24 @@
 {% include 'vyos-firewall.j2' %}
-{%- for interface in interfaces -%}
-    {#{%- if "vtun" in interface.name -%}
-        {% include 'vyos-bb.j2' %}#}
-    {%- if "lo" in interface.name -%}
+
+{% for interface in interfaces %}
+    {% if "lo" in interface.name %}
         {% include 'vyos-loopback.j2' %}
-    {%- elif "eth" in interface.name -%}
+
+    {% elif "eth" in interface.name %}
         {% include 'vyos-eth.j2' %}
-    {%- elif "wg" in interface.name -%}
+
+    {% elif "wg" in interface.name %}
         {% include 'vyos-wireguard.j2' %}
+        
     {% endif %}
 {% endfor %}
+
 {% include 'vyos-nat.j2' %}
+
 {% include 'vyos-protocols.j2' %}
+
+{% include 'vyos-policy.j2' %}
+
+{% include 'vyos-system.j2' %}
+
+{% include 'vyos-service.j2' %}

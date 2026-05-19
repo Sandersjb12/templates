@@ -1,29 +1,3 @@
-set service dns forwarding allow-from '172.20.53.64/27'
-set service dns forwarding dnssec 'process'
-set service dns forwarding listen-address '172.20.53.94'
-set service dns forwarding system
-set service ids
-set service lldp management-address '172.20.53.94'
-set service lldp snmp
-set service ntp allow-client address '0.0.0.0/0'
-set service ntp allow-client address '::/0'
-set service ntp allow-client address '172.20.53.64/27'
-set service ntp allow-client address 'fd00:1444:1821::/64'
-set service ntp server time1.vyos.net
-set service ntp server time2.vyos.net
-set service ntp server time3.vyos.net
-set service snmp listen-address 172.20.53.94
-set service snmp location 'Vultr Tokyo'
-set service snmp v3 engineid '000000000000000000000005'
-set service snmp v3 group default mode 'ro'
-set service snmp v3 group default view 'default'
-set service snmp v3 user nms auth encrypted-password '9a80cfdebfd5a01542ff71228a0e8a4cb1fac562'
-set service snmp v3 user nms auth type 'sha'
-set service snmp v3 user nms group 'default'
-set service snmp v3 user nms privacy encrypted-password '9a80cfdebfd5a01542ff71228a0e8a4cb1fac562'
-set service snmp v3 user nms privacy type 'aes'
-set service snmp v3 view default oid 1
-set service ssh port '22'
 set system config-management commit-revisions '100'
 set system conntrack modules ftp
 set system conntrack modules h323
@@ -38,13 +12,26 @@ set system domain-search 'dn42.jennsanders.net'
 set system domain-search 'dn42'
 set system frr bmp
 set system frr snmp bgpd
-set system frr snmp isisd
+set system frr snmp ospfd
+set system frr snmp ospf6d
 set system frr snmp ldpd
-set system host-name 'tky01.dn42'
+set system host-name '{{ dns_name }}'
 {#user keys#}
+set system login user jsanders authentication public-keys iphone key 'AAAAC3NzaC1lZDI1NTE5AAAAIEgEKCkLBVyHhsKQTRhpi/WpcAzqMANZ9mdvL0FWPSdd'
+set system login user jsanders authentication public-keys iphone type 'ssh-ed25519'
+set system login user jsanders authentication public-keys jenn@jenn-pc key 'AAAAB3NzaC1yc2EAAAADAQABAAABgQCvZ8OX3I6wVjhBH5nbFnV6HOPDOlTVgbbRT3zJXPzylsMH/psJsbVA1M3w7LGAwc0EdkqLgLWtpytYLtF1pvDsgmWKB4tbdxDTfdVrTRM80Cyqs8hVYSb5vAWm/zMigdgJLciJJWUqsywpzLRyeHeTSVTCydEd5Rs1zyef1/C+RxO21naM5LNN4C0KFQlUB4tcVzsFC5Q9tiEXn/8xsYpHZ4519lAS67JG2vnpfvyIpTnmTg/UCYRRRof6fSVDg0tnV2osYqETUy81PiuI7xfzg55b2YETEjCzcyE36vwjtQgBVfpw7BkdyMlTUAa4lR//4zLyn2NgCpE+M+/cGIheIvUg4X1moC2eQYcX2HwPv702/Sf7RVf/5KSgS4CzvJdljrfgzIuni9D1p4d0swDbP9iXhT9u5K8+uF45FVhOXvfYDQiDmCwswNP1B7ajHDyzffoJqgcXC/c1a801fd/3A0ZOGVJ25NtfDadmzz6IgmaJw8LPQWZPANn9A3ko/sU='
+set system login user jsanders authentication public-keys jenn@jenn-pc type 'ssh-rsa'
+set system login user jsanders authentication public-keys jsanders@MBP key 'AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAF7VsTSfeveHtYdp8eZKbeEyoR3z+TI27R+2bzW07V/eTQLQS+wd0XEJSq+obCl7yDDPXAsMJOJzIf+V9qBZ7tVgQCydk2QChuddol3gjCVYh+pC0yvv2eDumUHdcNlpvyAun3R4xMwDX06E3uMvViF/9ButSkQUb9uf47Lcns3e/JK8A=='
+set system login user jsanders authentication public-keys jsanders@MBP type 'ecdsa-sha2-nistp521'
+set system login user jsanders authentication public-keys jsanders@jenns-MacBook-Pro key 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDADQj/DcVQeE85Y+gaaPz1UTBCaMMCO6wvVk62z2nLhioQ+drpXoCgZDVspFAdiWFA05TUyJeRvO2Z9ldy2Gvbdngbi9LB4KAqAMxUtQqdLNf1psAptKF9ivfw/Hth50Q1cP+Mv18RpGal6O8Y2+C1Ix/7lbkgrVo2yYVJHR5doQ7kXYuCUHEXzrdX52BER2aZ5Wh+ZSrckGHkau5TB1vFxri2a+3pRe9lecsB7h7L8h+xD7s5SIFVRWVEdjTFMII0eqYFR0juA7YcVv8bGDuuQLcPccgWijtm8IieJ9Wg5LJisirU/bEMB78D+byuYH5rsmmUQAM1ktQuxuv04LVmH1HZkp4jil6nnedoSdzfdzOSy4BLjmNcB4lD+RgI1CP5WHgZHBrlO6h93MKyc++1CYn3/CcdECS2NlQ8pGo+cw5i7jghdmlIw09bTAOrhFLUDCmnh2NUPkCKCzGfuYSb7jJ62phD0phw3OsVIFGVi/DY7x4A2p9RtUGdVNhbxk8='
+set system login user jsanders authentication public-keys jsanders@jenns-MacBook-Pro type 'ssh-rsa'
+set system login user looking-glass authentication public-keys looking-glass key 'AAAAB3NzaC1yc2EAAAADAQABAAACAQC8GFOXVVlZ3x+fQiu7vgwDD7XaejfVAqk8p3Mg9Y7ymKY9IUGLZGSF3WNhfUtysCfPTazmjqGa8AHl25fNGwjFJYPDHrsrqC+S4mQO/IJujREAnxcQigEPmxVaJO3vSmQxjjZOO+zVf4Rh7utewrPaEhJcXPtaNdEns9DnpWDsRwI2s7PUtRKmK6zns0uN8DWg1xDuOvo57z+rbKwr7PwmEDxdw7DuTxzFo1K0HXkN+UIBufvS7h3edewZ6a8P8mSSCNJ+dj9zZiqvO8wNIvw/8ejA9jO9hDLcUy6WvTe8WfD7UX7/FeTO7zpQYejMn38d+T6HCsxakgBJx/2bqkp+NEixHOn3BqwMGKCIrFAKRdGe2llL0aX773c7GugqARa8zyC8z0cCmill5/kJjFKa7FZWwNYho91ylHXD5dRleZINbB0ZJm4czIARYVCtNPuopw/0qJge2m9irfO663QGkXI50CUqeJdwFC8fAGpjilQfv9IvjhPmkU1mDy0QgX4jlzYXp3iN+pOy9r3aAmNiL4hzNZN/XdWL1kERWC0x5zjava3FKQVlwcKMg7VGlBZpzLbDVUNBORaEniHIGL+AmV6JStnw/F17plqiBXmsvhHv8ehia7UO8KqbTAdPO2FoTriPzkb2/ER7qwPxXtdZpwmSYol63vhiXKhtgL0m0Q=='
+set system login user looking-glass authentication public-keys looking-glass type 'ssh-rsa'
+set system login user oxidized authentication public-keys oxidized key 'AAAAC3NzaC1lZDI1NTE5AAAAICdrS55mFxF16JL7lVfncTOr0S/Jy8MvPCIwRx/7lA3t'
+set system login user oxidized authentication public-keys oxidized type 'ssh-ed25519'
 set system name-server '192.168.1.10'
-set system option performance 'latency'
-set system syslog global facility all level 'info'
-set system syslog global facility local7 level 'debug'
-set system syslog host nms.home.jennsanders.net facility local7 level 'err'
-set system syslog host nms.home.jennsanders.net protocol 'udp'
+set system option performance 'network-latency'
+set system syslog local facility all level 'info'
+set system syslog local facility local7 level 'debug'
+set system syslog remote nms.home.jennsanders.net facility local7 level 'err'
+set system syslog remote nms.home.jennsanders.net protocol 'udp'

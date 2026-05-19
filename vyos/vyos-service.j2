@@ -1,9 +1,8 @@
 set service dns forwarding allow-from '172.20.53.64/27'
 set service dns forwarding dnssec 'process'
-set service dns forwarding listen-address '172.20.53.94'
+set service dns forwarding listen-address '{{ primary_ip4 }}'
 set service dns forwarding system
-set service ids
-set service lldp management-address '172.20.53.94'
+set service lldp management-address '{{ primary_ip4 }}'
 set service lldp snmp
 set service ntp allow-client address '0.0.0.0/0'
 set service ntp allow-client address '::/0'
@@ -12,9 +11,11 @@ set service ntp allow-client address 'fd00:1444:1821::/64'
 set service ntp server time1.vyos.net
 set service ntp server time2.vyos.net
 set service ntp server time3.vyos.net
-set service snmp listen-address 172.20.53.94
-set service snmp location 'Vultr Tokyo'
-set service snmp v3 engineid '000000000000000000000005'
+set service snmp listen-address {{ primary_ip4 }}
+set service snmp location '{{ sites[0] }}'
+{% set enterprise_number = "80044641" %} {# VyOS IANA PEN #}
+{% set octets = primary_ip4.split('.') %}
+set service snmp v3 engineid '{{ enterprise_number }}{{ "%02x%02x%02x%02x" | format(octets[0]|int, octets[1]|int, octets[2]|int, octets[3]|int) }}'
 set service snmp v3 group default mode 'ro'
 set service snmp v3 group default view 'default'
 {#password#}
